@@ -1,0 +1,43 @@
+* Docker
+** Mongo
+   #+begin_src bash :dir /gahag/programming/projects/es/reprova/
+     docker run \
+            -d \
+            --name mongo \
+            -p 27017:27017 \
+            -v $PWD/db/:/data/db \
+            mvertes/alpine-mongo
+   #+end_src
+* API
+  #+name: address
+  : http://localhost:1337
+** Requests
+*** Post
+    #+name: post
+    #+begin_src bash :var address=address :var endpoint="" :var payload=""
+      curl -H "Content-Type: application/json" \
+           -d "$payload" \
+           -X POST "$address$endpoint"
+    #+end_src
+** Endpoints
+*** Questions
+    #+name: questions-endpoint
+    : /api/questions
+**** Post
+     #+name: question-payload
+     #+begin_example
+       {
+         "theme": "reuso",
+         "description": "Quais são os princípios do manifesto Ágil?",
+         "record": {
+           "2019/2": {
+             "tz": 7.8,
+             "tw": 3.8
+           }
+         },
+         "pvt": false
+       }
+     #+end_example
+     #+call: post(address, questions-endpoint, question-payload)
+     #+results:
+     : OK

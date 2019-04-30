@@ -1,0 +1,14 @@
+* Dados - Questões
+  - Enunciado :: Documento word
+  - Tema :: String
+  - Aproveitamento de cada turma em cada semestre :: Porcentagem
+  - Semestres em que foi utilizada :: Semestres
+* Visualizações
+  - Cadastrar questões
+  - Listar questões
+    + Filtrar utilizadas em período
+    + Filtrar por aproveitamento
+  - Listar questões públicas
+    + Não disponibilizar os semestres utilizados
+* Autenticação
+  - Chave?

@@ -1,0 +1,21 @@
+* Backend
+** DONE Mongo
+   CLOSED: [2019-04-30 Tue 11:26]
+   - [X] [[https://hub.docker.com/r/mvertes/alpine-mongo][Mongo alpine docker image]]
+   - [X] [[https://mongodb.github.io/mongo-java-driver/][Mongo java driver]]
+   - [X] [[http://mongodb.github.io/mongo-java-driver/3.10/driver/getting-started/quick-start/][Mongo java quickstart]]
+** DONE Spark
+   CLOSED: [2019-04-30 Tue 11:26]
+   [[http://sparkjava.com/documentation#getting-started][Documentation]]
+** DISMISSED JAX-RS / Jersey
+** DISMISSED Spring
+   [[https://spring.io/guides/gs/spring-boot-docker/][Spring boot with docker]]
+   [[https://spring.io/guides/gs/rest-service/][REST APIs with Spring]]
+   [[https://spring.io/guides/gs/serving-web-content/][Web content with Spring]]
+* Frontend
+** TODO Static pages
+   [[http://sparkjava.com/documentation#static-files][Spark static content]]
+** TODO JQuery
+*** Datatables
+** DISMISSED Spring static content
+   CLOSED: [2019-04-30 Tue 11:26]
