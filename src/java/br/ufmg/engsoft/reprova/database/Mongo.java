@@ -11,7 +11,14 @@ import org.slf4j.LoggerFactory;
 
 
 public class Mongo {
-  protected static final String endpoint = "mongodb://localhost:27017";
+  protected static final int connectTimeout = 5000;
+
+  protected static final String options = String.format(
+    "?connectTimeoutMS=%d",
+    connectTimeout
+  );
+
+  protected static final String endpoint = "mongodb://mongo:27017/" + options;
 
   protected final MongoDatabase db;
 

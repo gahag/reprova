@@ -1,9 +1,10 @@
 * Backend
 ** DONE Mongo
    CLOSED: [2019-04-30 Tue 11:26]
-   - [X] [[https://hub.docker.com/r/mvertes/alpine-mongo][Mongo alpine docker image]]
-   - [X] [[https://mongodb.github.io/mongo-java-driver/][Mongo java driver]]
-   - [X] [[http://mongodb.github.io/mongo-java-driver/3.10/driver/getting-started/quick-start/][Mongo java quickstart]]
+   - [[https://hub.docker.com/r/mvertes/alpine-mongo][Mongo alpine docker image]]
+   - [[https://mongodb.github.io/mongo-java-driver/][Mongo java driver]]
+   - [[http://mongodb.github.io/mongo-java-driver/3.10/driver/getting-started/quick-start/][Mongo java quickstart]]
+   - [[https://mongodb.github.io/mongo-java-driver/3.10/driver/tutorials/perform-read-operations/][Mongo read operations]]
 ** DONE Spark
    CLOSED: [2019-04-30 Tue 11:26]
    [[http://sparkjava.com/documentation#getting-started][Documentation]]

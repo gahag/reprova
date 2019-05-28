@@ -1,32 +1,100 @@
 package br.ufmg.engsoft.reprova.database;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import com.mongodb.client.MongoCollection;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.*;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.ufmg.engsoft.reprova.model.Question;
+import br.ufmg.engsoft.reprova.model.Semester;
+import br.ufmg.engsoft.reprova.mime.json.Json;
 
 
 public class QuestionsDAO {
+  protected final Json json;
+
   protected final MongoCollection<Document> collection;
 
   protected static Logger logger = LoggerFactory.getLogger(QuestionsDAO.class);
 
 
 
-  public QuestionsDAO(Mongo db) {
+  public QuestionsDAO(Mongo db, Json json) {
+    if (json == null)
+      throw new IllegalArgumentException("json mustn't be null");
+
+    this.json = json;
+
     this.collection = db.getCollection("questions");
   }
 
 
 
-  public void add(Question question) {
+  protected Question parseDoc(Document document) {
+    var doc = document.toJson();
+    logger.info("Fetched question: " + doc);
+    try {
+      var question = json
+        .parse(doc, Question.Builder.class)
+        .build();
+
+      logger.info("Parsed question: " + question);
+
+      return question;
+    }
+    catch (Exception e) {
+      logger.error("Invalid document in database!", e);
+      return null; // TODO
+    }
+  }
+
+
+  public Question get(String id) {
+    var question = this.collection
+      .find(eq(new ObjectId(id)))
+      .map(this::parseDoc)
+      .first();
+
+    if (question == null)
+      logger.info("No such question " + id);
+
+    return question;
+  }
+
+
+  public List<Question> list(String theme, Set<Semester> semester, Boolean pvt) {
+    var filter = and( // TODO: filters can't be null.
+      theme == null ? null : eq("theme", theme),
+      // TODO: semester
+      pvt == null ? null : eq("pvt", pvt)
+    );
+
+    var result = new ArrayList<Question>();
+
+    this.collection
+      .find() // filter
+      .projection(
+        fields(exclude("statement"))
+      )
+      .map(this::parseDoc)
+      .into(result);
+
+    return result;
+  }
+
+
+  public boolean add(Question question) {
     Map<String, Object> record = question.record // Convert the keys to string,
       .entrySet()                                // and values to object.
       .stream()
@@ -44,11 +112,36 @@ public class QuestionsDAO {
       .append("record", new Document(record))
       .append("pvt", question.pvt);
 
-    if (question.id != null)
-      doc.append("_id", question.id);
+    var id = question.id;
+    if (id != null) {
+      var result = this.collection.replaceOne(
+        eq(new ObjectId(id)),
+        doc
+      );
 
-    this.collection.insertOne(doc);
+      if (!result.wasAcknowledged()) {
+        logger.warn("Failed to replace question " + id);
+        return false;
+      }
+    }
+    else
+      this.collection.insertOne(doc);
 
-    logger.info("Stored question #" + doc.get("_id"));
+    logger.info("Stored question " + doc.get("_id"));
+
+    return true;
+  }
+
+  public boolean remove(String id) {
+    var result = this.collection.deleteOne(
+      eq(new ObjectId(id))
+    ).wasAcknowledged();
+
+    if (result)
+      logger.info("Deleted question " + id);
+    else
+      logger.warn("Failed to delete question " + id);
+
+    return result;
   }
 }

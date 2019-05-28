@@ -4,5 +4,8 @@ build:
 package:
 	mvn assembly:single
 
+docker:
+	docker-compose build
+
 run:
-	java -jar target/reprova.jar
+	docker-compose up

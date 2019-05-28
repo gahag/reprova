@@ -4,11 +4,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.lang.reflect.Type;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonParseException;
-
 
 public class Semester {
   public enum Reference {
@@ -41,26 +36,6 @@ public class Semester {
   public final Reference ref;
 
 
-
-  public static class Deserializer implements JsonDeserializer<Semester> {
-    @Override
-    public Semester deserialize(
-      JsonElement json,
-      Type typeOfT,
-      JsonDeserializationContext context
-    ) {
-      String[] values = json.getAsString().split("/");
-
-      if (values.length != 2)
-        throw new JsonParseException("invalid semester");
-
-      var year = Integer.parseInt(values[0]);
-
-      var ref = Reference.fromInt(Integer.parseInt(values[1]));
-
-      return new Semester(year, ref);
-    }
-  }
 
   public Semester(int year, Reference ref) {
     if (ref == null)

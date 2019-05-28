@@ -1,17 +1,25 @@
-* Docker
-** Mongo
-   #+begin_src bash :dir /gahag/programming/projects/es/reprova/
-     docker run \
-            -d \
-            --name mongo \
-            -p 27017:27017 \
-            -v $PWD/db/:/data/db \
-            mvertes/alpine-mongo
-   #+end_src
+# -*- org-confirm-babel-evaluate: nil -*-
+
 * API
   #+name: address
-  : http://localhost:1337
+  : http://localhost:8080
+** Json
+   #+name: json-pretty
+   #+begin_src elisp :var data=""
+   (with-temp-buffer
+     (insert data)
+     (json-pretty-print-buffer)
+     (buffer-string))
+   #+end_src
 ** Requests
+*** Get
+    :properties:
+    :header-args+: :results code :wrap "src json" :post json-pretty(data = *this*)
+    :end:
+    #+name: get
+    #+begin_src bash :var address=address :var endpoint="" :var params=""
+      curl -X GET "$address$endpoint$params"
+    #+end_src
 *** Post
     #+name: post
     #+begin_src bash :var address=address :var endpoint="" :var payload=""
@@ -19,25 +27,52 @@
            -d "$payload" \
            -X POST "$address$endpoint"
     #+end_src
+*** Delete
+    #+name: delete
+    #+begin_src bash :var address=address :var endpoint="" :var params=""
+      curl -X DELETE "$address$endpoint$params"
+    #+end_src
 ** Endpoints
 *** Questions
     #+name: questions-endpoint
     : /api/questions
+**** Get
+***** Id
+      #+call: get[:var params="?id=5cec6d15fd2b722f3c58d539"](address, questions-endpoint)
+      #+results:
+      #+BEGIN_src json
+      null
+      #+END_src
+***** All
+      #+call: get(address, questions-endpoint, "")
+      #+results:
+      #+BEGIN_src json
+      []
+      #+END_src
 **** Post
      #+name: question-payload
-     #+begin_example
+     #+begin_example json
        {
-         "theme": "reuso",
-         "description": "Quais são os princípios do manifesto Ágil?",
+         "theme": "pruu",
+         "description": "hihihi",
+         "statement": "hihihi",
          "record": {
-           "2019/2": {
-             "tz": 7.8,
-             "tw": 3.8
+           "2020/2": {
+             "tz": 4.0,
+             "tw": 7.0
+           },
+           "2020/1": {
+             "tz": 5.0,
+             "tw": 6.0
            }
          },
          "pvt": false
        }
      #+end_example
      #+call: post(address, questions-endpoint, question-payload)
+     #+results:
+     : OK
+**** Delete
+     #+call: delete[:var params="?id=5cedbe30a9faf665092a4410"](address, questions-endpoint)
      #+results:
      : OK

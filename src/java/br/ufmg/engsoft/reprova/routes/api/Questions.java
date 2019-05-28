@@ -4,33 +4,32 @@ import spark.Spark;
 import spark.Request;
 import spark.Response;
 
-import com.google.gson.Gson;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.ufmg.engsoft.reprova.database.QuestionsDAO;
 import br.ufmg.engsoft.reprova.model.Question;
+import br.ufmg.engsoft.reprova.mime.json.Json;
 
 
 public class Questions {
   protected static Logger logger = LoggerFactory.getLogger(Questions.class);
 
 
-  protected final Gson jsonParser;
+  protected final Json json;
   protected final QuestionsDAO questionsDAO;
 
 
 
 
-  public Questions(Gson jsonParser, QuestionsDAO questionsDAO) {
-    if (jsonParser == null)
-      throw new IllegalArgumentException("jsonParser mustn't be null");
+  public Questions(Json json, QuestionsDAO questionsDAO) {
+    if (json == null)
+      throw new IllegalArgumentException("json mustn't be null");
 
     if (questionsDAO == null)
       throw new IllegalArgumentException("questionsDAO mustn't be null");
 
-    this.jsonParser = jsonParser;
+    this.json = json;
     this.questionsDAO = questionsDAO;
   }
 
@@ -38,41 +37,86 @@ public class Questions {
 
 
   public void setup() {
+    Spark.get("/api/questions", this::get);
     Spark.post("/api/questions", this::post);
-    logger.info("Post on /api/questions.");
+    Spark.delete("/api/questions", this::delete);
+
+    logger.info("Setup /api/questions.");
+  }
+
+
+  protected String get(Request request, Response response) {
+    logger.info("Received questions get:");
+
+    response.type("application/json");
+
+    var id = request.queryParams("id");
+
+    if (id != null) {
+      logger.info("Fetching question " + id);
+
+      var question = questionsDAO.get(id);
+
+      logger.info("Done. Responding...");
+
+      return json.render(question);
+    }
+    else {
+      logger.info("Fetching questions.");
+
+      var questions = questionsDAO.list(null, null, null);
+
+      logger.info("Done. Responding...");
+
+      return json.render(questions);
+    }
   }
 
 
   protected String post(Request request, Response response) {
-    logger.info("Received questions post:");
-
     String body = request.body();
 
-    logger.info(body);
-
+    logger.info("Received questions post:" + body);
 
     response.type("application/json");
 
 
     Question question;
     try {
-      question = jsonParser
-        .fromJson(body, Question.Builder.class)
+      question = json
+        .parse(body, Question.Builder.class)
         .build();
     }
     catch (Exception e) {
       // TODO
-      System.out.println(e);
+      logger.error("Invalid request payload!", e);
       return null;
     }
 
-    logger.info("Parsed question:");
-    logger.info(question.toString());
+    logger.info("Parsed " + question.toString());
 
 
     questionsDAO.add(question);
 
     return "OK";
   }
+
+
+    protected String delete(Request request, Response response) {
+      logger.info("Received questions delete:");
+
+      response.type("application/json");
+
+      var id = request.queryParams("id");
+
+      logger.info("Deleting question " + id);
+
+      var result = questionsDAO.remove(id);
+
+      logger.info("Done. Responding...");
+
+      return result ? "OK" : "Error";
+
+    }
 }
 
