@@ -47,15 +47,32 @@
       #+call: get(address, questions-endpoint, "")
       #+results:
       #+BEGIN_src json
-      []
+      [
+        {
+          "id": "5cef09aaa1b81a272d682a73",
+          "theme": "pruu",
+          "description": "hihihi",
+          "record": {
+            "2020/1": {
+              "tz": 5.0,
+              "tw": 6.0
+            },
+            "2020/2": {
+              "tz": 4.0,
+              "tw": 7.0
+            }
+          },
+          "pvt": false
+        }
+      ]
       #+END_src
 **** Post
      #+name: question-payload
      #+begin_example json
        {
-         "theme": "pruu",
-         "description": "hihihi",
-         "statement": "hihihi",
+         "theme": "agil",
+         "description": "qual o melhor método ágil?",
+         "statement": "fafdsfsdf",
          "record": {
            "2020/2": {
              "tz": 4.0,
@@ -66,7 +83,7 @@
              "tw": 6.0
            }
          },
-         "pvt": false
+         "pvt": true
        }
      #+end_example
      #+call: post(address, questions-endpoint, question-payload)

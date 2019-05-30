@@ -1,0 +1,36 @@
+body {
+  background-color: #F3F3F3;
+}
+
+.container {
+	padding: 24pt;
+  text-align: center;
+}
+
+hr {
+  margin-top: 20pt;
+  margin-bottom: 20pt;
+}
+
+h2 {
+	margin-top: 0;
+}
+
+
+.questions-table, .questions-header, .questions-cell {
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.questions-table {
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.questions-header {
+  text-align: center;
+}
+
+.questions-header, .questions-cell {
+  padding: 15px;
+}

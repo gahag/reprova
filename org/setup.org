@@ -14,9 +14,11 @@
    [[https://spring.io/guides/gs/rest-service/][REST APIs with Spring]]
    [[https://spring.io/guides/gs/serving-web-content/][Web content with Spring]]
 * Frontend
-** TODO Static pages
+** DONE Static pages
+   CLOSED: [2019-05-29 Wed 22:35]
    [[http://sparkjava.com/documentation#static-files][Spark static content]]
-** TODO JQuery
+** DONE JQuery
+   CLOSED: [2019-05-29 Wed 22:35]
 *** Datatables
 ** DISMISSED Spring static content
    CLOSED: [2019-04-30 Tue 11:26]
