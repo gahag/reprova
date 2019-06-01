@@ -7,9 +7,9 @@ function table_build_section(rows, container_elem, row_elem, cell_elem) {
     return x;
   };
 
-  var container_elem = str_or_obj(container_elem);
-  var row_elem = str_or_obj(row_elem);
-  var cell_elem = str_or_obj(cell_elem);
+  container_elem = str_or_obj(container_elem);
+  row_elem = str_or_obj(row_elem);
+  cell_elem = str_or_obj(cell_elem);
 
   let container = document.createElement(container_elem.name);
   container.className = container_elem.className;
@@ -39,21 +39,11 @@ function table_build_section(rows, container_elem, row_elem, cell_elem) {
 
 function questionsTable(data) {
   let headers = [
-    [ { text: 'Questions', colSpan: '4' } ],
-    [ 'Description', 'Theme', 'Record', 'Private' ]
+    [ { text: 'Questions', colSpan: '5' } ],
+    [ 'Description', 'Theme', 'Record', 'Private', 'Actions' ]
   ];
   let rows = data.map(
     q => {
-      let description = document.createElement('a');
-      description.appendChild(document.createTextNode(q.description));
-      description.href = '#';
-      description.onclick = async () => {
-        const request = await fetch('http://localhost:8080/api/questions?id=' + q.id);
-        const response = await request.json();
-
-        console.log(response);
-      };
-
       // let record = document.createElement('table');
       // record.appendChild(
       //   table_build_section(
@@ -63,8 +53,29 @@ function questionsTable(data) {
       //     { name: 'td', className: 'questions-cell' }
       //   )
       // );
-      
-      return [ { elem: description }, q.theme, 'record', q.pvt ];
+
+      let download = document.createElement('button');
+      download.appendChild(document.createTextNode('Download'));
+      download.type = 'button';
+      download.onclick = () => downloadQuestion(q.id);
+
+      let remove = document.createElement('button');
+      remove.appendChild(document.createTextNode('Remove'));
+      remove.type = 'button';
+      remove.onclick = () => removeQuestion(q.id);
+
+      let actions = document.createElement('div');
+      actions.appendChild(download);
+      actions.appendChild(remove);
+      // actions.appendChild(edit);
+
+      return [
+        q.description,
+        q.theme,
+        'record',
+        q.pvt,
+        { elem: actions }
+      ];
     }
   );
 
@@ -93,8 +104,31 @@ function questionsTable(data) {
 }
 
 
+async function downloadQuestion(id) {
+  const response = await fetch(
+    'http://localhost:8080/api/questions?token=' + token + '&id=' + id
+  );
+  const question = await response.json();
+
+  // TODO decompress and download.
+
+  console.log(question); // TODO
+}
+
+async function removeQuestion(id) {
+  const response = await fetch(
+    'http://localhost:8080/api/questions?token=' + token + '&id=' + id,
+    { method: 'delete' }
+  );
+
+  if (response.ok)
+    refresh();
+  else
+    alert('Failed to delete question!');
+}
+
 async function loadQuestions() {
-  const request = await fetch('http://localhost:8080/api/questions');
+  const request = await fetch('http://localhost:8080/api/questions?token=' + token);
   const response = await request.json();
 
   console.log(response);
@@ -104,7 +138,23 @@ async function loadQuestions() {
 
   $('#root').append(table);
 
-  $('#questions').DataTable();
+  return $('#questions').DataTable();
 }
 
-$(document).ready(loadQuestions);
+async function refresh() {
+  questionsDataTable.destroy(); // remove datatable.
+
+  $('#questions').remove(); // remove table.
+
+  questionsDataTable = await loadQuestions(); // rebuild table.
+}
+
+
+var url = new URL(window.location.href);
+var token = url.searchParams.get("token");
+
+var questionsDataTable;
+
+$(document).ready(async () => {
+  questionsDataTable = await loadQuestions();
+});
