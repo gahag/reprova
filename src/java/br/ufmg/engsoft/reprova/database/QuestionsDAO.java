@@ -1,9 +1,11 @@
 package br.ufmg.engsoft.reprova.database;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import com.mongodb.client.MongoCollection;
@@ -74,16 +76,21 @@ public class QuestionsDAO {
 
 
   public List<Question> list(String theme, Set<Semester> semester, Boolean pvt) {
-    var filter = and( // TODO: filters can't be null.
-      theme == null ? null : eq("theme", theme),
-      // TODO: semester
-      pvt == null ? null : eq("pvt", pvt)
+    var filter = and(
+      Arrays.asList(
+        theme == null ? null : eq("theme", theme),
+        pvt == null ? null : eq("pvt", pvt)
+        // TODO: semester
+      )
+      .stream()
+      .filter(Objects::nonNull)
+      ::iterator
     );
 
     var result = new ArrayList<Question>();
 
     this.collection
-      .find() // filter
+      .find(filter)
       .projection(
         fields(exclude("statement"))
       )
