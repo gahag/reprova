@@ -17,41 +17,63 @@
     :header-args+: :results code :wrap "src json" :post json-pretty(data = *this*)
     :end:
     #+name: get
-    #+begin_src bash :var address=address :var endpoint="" :var params=""
-      curl -X GET "$address$endpoint$params"
+    #+begin_src bash :var address=address :var endpoint="" :var token="" :var params=""
+      url="$address$endpoint?$params"
+
+      if [ ! -z $token ]; then
+        url="$url&token=$token"
+      fi
+
+      curl -X GET "$url"
     #+end_src
 *** Post
     #+name: post
-    #+begin_src bash :var address=address :var endpoint="" :var payload=""
-      curl -H "Content-Type: application/json" \
+    #+begin_src bash :var address=address :var endpoint="" :var token="" :var payload=""
+      url="$address$endpoint"
+
+      if [ ! -z $token ]; then
+        url="$url?token=$token"
+      fi
+
+
+      curl -X POST \
+           -H "Content-Type: application/json" \
            -d "$payload" \
-           -X POST "$address$endpoint"
+           "$url"
     #+end_src
 *** Delete
     #+name: delete
-    #+begin_src bash :var address=address :var endpoint="" :var params=""
-      curl -X DELETE "$address$endpoint$params"
+    #+begin_src bash :var address=address :var endpoint="" :var token="" :var params=""
+      url="$address$endpoint?$params"
+
+      if [ ! -z $token ]; then
+        url="$url&token=$token"
+      fi
+
+      curl -X DELETE $url
     #+end_src
 ** Endpoints
 *** Questions
     #+name: questions-endpoint
     : /api/questions
+    #+name: token
+    : d2fad245dd1d8a4f863e3f1c32bdada723361e6f63cfddf56663e516e47347bb
 **** Get
 ***** Id
-      #+call: get[:var params="?id=5cec6d15fd2b722f3c58d539"](address, questions-endpoint)
+      #+call: get(address, questions-endpoint, token, params="id=5cef2b28eeddfd4b1fe5ac7e")
       #+results:
       #+BEGIN_src json
-      null
+      "Invalid request"
       #+END_src
 ***** All
-      #+call: get(address, questions-endpoint, "")
+      #+call: get(address, questions-endpoint, params="token=d2fad245dd1d8a4f863e3f1c32bdada723361e6f63cfddf56663e516e47347bb")
       #+results:
       #+BEGIN_src json
       [
         {
-          "id": "5cef09aaa1b81a272d682a73",
-          "theme": "pruu",
-          "description": "hihihi",
+          "id": "5cef2b28eeddfd4b1fe5ac7e",
+          "theme": "reuso",
+          "description": "qual a melhor técinica de reuso?",
           "record": {
             "2020/1": {
               "tz": 5.0,
@@ -62,7 +84,23 @@
               "tw": 7.0
             }
           },
-          "pvt": false
+          "pvt": true
+        },
+        {
+          "id": "5cef2b40eeddfd4b1fe5ac7f",
+          "theme": "agil",
+          "description": "qual o melhor método ágil?",
+          "record": {
+            "2020/1": {
+              "tz": 5.0,
+              "tw": 6.0
+            },
+            "2020/2": {
+              "tz": 4.0,
+              "tw": 7.0
+            }
+          },
+          "pvt": true
         }
       ]
       #+END_src
@@ -70,8 +108,8 @@
      #+name: question-payload
      #+begin_example json
        {
-         "theme": "agil",
-         "description": "qual o melhor método ágil?",
+         "theme": "third",
+         "description": "kiuuuu?",
          "statement": "fafdsfsdf",
          "record": {
            "2020/2": {
@@ -86,10 +124,10 @@
          "pvt": true
        }
      #+end_example
-     #+call: post(address, questions-endpoint, question-payload)
+     #+call: post(address, questions-endpoint, token, question-payload)
      #+results:
-     : OK
+     : Ok
 **** Delete
-     #+call: delete[:var params="?id=5cedbe30a9faf665092a4410"](address, questions-endpoint)
+     #+call: delete(address, questions-endpoint, token, params="id=5cef2b28eeddfd4b1fe5ac7e")
      #+results:
-     : OK
+     : Ok

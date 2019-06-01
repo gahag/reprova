@@ -13,7 +13,14 @@ import br.ufmg.engsoft.reprova.mime.json.Json;
 
 
 public class Questions {
-  protected static Logger logger = LoggerFactory.getLogger(Questions.class);
+  protected static final Logger logger = LoggerFactory.getLogger(Questions.class);
+
+  protected static final String token =
+    "d2fad245dd1d8a4f863e3f1c32bdada723361e6f63cfddf56663e516e47347bb";
+
+  protected static final String unauthorised = "\"Unauthorised\"";
+  protected static final String invalid = "\"Invalid request\"";
+  protected static final String ok = "\"Ok\"";
 
 
   protected final Json json;
@@ -35,6 +42,9 @@ public class Questions {
 
 
 
+  public static boolean authorized(String token) {
+    return Questions.token.equals(token);
+  }
 
   public void setup() {
     Spark.get("/api/questions", this::get);
@@ -45,41 +55,75 @@ public class Questions {
   }
 
 
-  protected String get(Request request, Response response) {
+  protected Object get(Request request, Response response) {
     logger.info("Received questions get:");
 
     response.type("application/json");
 
     var id = request.queryParams("id");
+    var token = request.queryParams("token");
 
     if (id != null) {
       logger.info("Fetching question " + id);
 
       var question = questionsDAO.get(id);
 
+      if (question == null) {
+        logger.error("Invalid request!");
+
+        response.status(400);
+
+        return invalid;
+      }
+
+      if (question.pvt && !authorized(token)) {
+        logger.info("Unauthorized token: " + token);
+
+        response.status(403);
+
+        return unauthorised;
+      }
+
       logger.info("Done. Responding...");
+
+      response.status(200);
 
       return json.render(question);
     }
     else {
       logger.info("Fetching questions.");
 
-      var questions = questionsDAO.list(null, null, null);
+      var questions = questionsDAO.list(
+        null,
+        null,
+        authorized(token)
+      );
 
       logger.info("Done. Responding...");
+
+      response.status(200);
 
       return json.render(questions);
     }
   }
 
 
-  protected String post(Request request, Response response) {
+  protected Object post(Request request, Response response) {
     String body = request.body();
 
     logger.info("Received questions post:" + body);
 
     response.type("application/json");
 
+    var token = request.queryParams("token");
+
+    if (!authorized(token)) {
+      logger.info("Unauthorized token: " + token);
+
+      response.status(403);
+
+      return unauthorised;
+    }
 
     Question question;
     try {
@@ -88,35 +132,58 @@ public class Questions {
         .build();
     }
     catch (Exception e) {
-      // TODO
       logger.error("Invalid request payload!", e);
-      return null;
+
+      response.status(400);
+
+      return invalid;
     }
 
     logger.info("Parsed " + question.toString());
 
+    logger.info("Adding question.");
 
-    questionsDAO.add(question);
+    if (questionsDAO.add(question))
+      response.status(200);
+    else
+      response.status(400);
 
-    return "OK";
+    logger.info("Done. Responding...");
+
+    return ok;
   }
 
 
-    protected String delete(Request request, Response response) {
-      logger.info("Received questions delete:");
+  protected Object delete(Request request, Response response) {
+    logger.info("Received questions delete:");
 
-      response.type("application/json");
+    response.type("application/json");
 
-      var id = request.queryParams("id");
+    var id = request.queryParams("id");
+    var token = request.queryParams("token");
 
-      logger.info("Deleting question " + id);
+    if (!authorized(token)) {
+      logger.info("Unauthorized token: " + token);
 
-      var result = questionsDAO.remove(id);
+      response.status(403);
 
-      logger.info("Done. Responding...");
-
-      return result ? "OK" : "Error";
-
+      return unauthorised;
     }
-}
 
+    if (id == null) {
+      logger.error("Invalid request!");
+      response.status(400);
+      return invalid;
+    }
+
+    logger.info("Deleting question " + id);
+
+    var result = questionsDAO.remove(id);
+
+    logger.info("Done. Responding...");
+
+    response.status(result ? 200 : 400);
+
+    return ok;
+  }
+}
