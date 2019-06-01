@@ -35,6 +35,9 @@ h2 {
   padding: 15px;
 }
 
+.record-table {
+  float: left;
+}
 
 button {
   margin: 0 3px;

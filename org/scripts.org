@@ -108,17 +108,27 @@
      #+name: question-payload
      #+begin_example json
        {
-         "theme": "third",
-         "description": "kiuuuu?",
+         "theme": "quitute",
+         "description": "fifififi?",
          "statement": "fafdsfsdf",
          "record": {
-           "2020/2": {
-             "tz": 4.0,
-             "tw": 7.0
+           "2019/1": {
+             "tz": 4.5,
+             "tw": 7.5
+           },
+           "2019/2": {
+             "tz": 5.0,
+             "tw": 6.0
            },
            "2020/1": {
              "tz": 5.0,
              "tw": 6.0
+           },
+           "2020/2": {
+             "tz": 5.9,
+             "tw": 6.9,
+             "tx": 7.9,
+             "ta": 8.9
            }
          },
          "pvt": true

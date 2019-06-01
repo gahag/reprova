@@ -44,15 +44,22 @@ function questionsTable(data) {
   ];
   let rows = data.map(
     q => {
-      // let record = document.createElement('table');
-      // record.appendChild(
-      //   table_build_section(
-      //     rows,
-      //     'tbody',
-      //     'tr',
-      //     { name: 'td', className: 'questions-cell' }
-      //   )
-      // );
+      let record = document.createElement('div');
+      for (semester in q.record) {
+        let grades = Object.entries(q.record[semester]);
+
+        let table = document.createElement('table');
+        table.className = 'record-table';
+
+        table.appendChild(
+          table_build_section([[semester]], 'thead', 'tr', 'th')
+        );
+        table.appendChild(
+          table_build_section(grades, 'tbody', 'tr', 'td')
+        );
+
+        record.appendChild(table);
+      }
 
       let download = document.createElement('button');
       download.appendChild(document.createTextNode('Download'));
@@ -72,7 +79,7 @@ function questionsTable(data) {
       return [
         q.description,
         q.theme,
-        'record',
+        { elem: record },
         q.pvt,
         { elem: actions }
       ];
@@ -81,7 +88,7 @@ function questionsTable(data) {
 
 
   let table = document.createElement('table');
-  table.className = 'questions';
+  table.className = 'questions-table';
 
   table.appendChild(
     table_build_section(
