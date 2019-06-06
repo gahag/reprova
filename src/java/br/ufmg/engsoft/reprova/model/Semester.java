@@ -2,7 +2,6 @@ package br.ufmg.engsoft.reprova.model;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.lang.reflect.Type;
 
 
 public class Semester {
