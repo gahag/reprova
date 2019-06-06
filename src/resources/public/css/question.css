@@ -1,0 +1,14 @@
+body {
+  background-color: #F3F3F3;
+}
+
+#root {
+	padding: 24pt;
+  width: 25%;
+  margin: 0 auto;
+}
+
+
+input {
+  margin: 5px 0;
+}
