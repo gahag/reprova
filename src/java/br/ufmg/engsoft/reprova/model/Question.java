@@ -139,7 +139,7 @@ public class Question {
         "  head: " +
         this.statement.substring(
           0,
-          Math.min(this.statement.length(), 10)
+          Math.min(this.statement.length(), 50)
         ) +
         "\n"
       );

@@ -1,11 +1,11 @@
 package br.ufmg.engsoft.reprova.database;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import com.mongodb.client.MongoCollection;
@@ -13,14 +13,15 @@ import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.ufmg.engsoft.reprova.mime.json.Json;
 import br.ufmg.engsoft.reprova.model.Question;
 import br.ufmg.engsoft.reprova.model.Semester;
-import br.ufmg.engsoft.reprova.mime.json.Json;
 
 
 public class QuestionsDAO {
@@ -76,24 +77,22 @@ public class QuestionsDAO {
 
 
   public List<Question> list(String theme, Set<Semester> semester, Boolean pvt) {
-    var filter = and(
-      Arrays.asList(
+    var filters = Arrays.asList(
         theme == null ? null : eq("theme", theme),
         pvt == null ? null : eq("pvt", pvt)
-        // TODO: semester
+        // Semester
       )
       .stream()
       .filter(Objects::nonNull)
-      ::iterator
-    );
+      .collect(Collectors.toList());
+
+    var doc = filters.isEmpty() // mongo won't take null as a filter.
+      ? this.collection.find()
+      : this.collection.find(and(filters));
 
     var result = new ArrayList<Question>();
 
-    this.collection
-      .find(filter)
-      .projection(
-        fields(exclude("statement"))
-      )
+    doc.projection(fields(exclude("statement")))
       .map(this::parseDoc)
       .into(result);
 

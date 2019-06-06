@@ -96,7 +96,7 @@ public class Questions {
       var questions = questionsDAO.list(
         null,
         null,
-        authorized(token)
+        authorized(token) ? null : false
       );
 
       logger.info("Done. Responding...");

@@ -60,10 +60,17 @@
     : d2fad245dd1d8a4f863e3f1c32bdada723361e6f63cfddf56663e516e47347bb
 **** Get
 ***** Id
-      #+call: get(address, questions-endpoint, token, params="id=5cef2b28eeddfd4b1fe5ac7e")
+      #+call: get(address, questions-endpoint, token, params="id=5cf7d00e75481c4cf21bea07")
       #+results:
       #+BEGIN_src json
-      "Invalid request"
+      {
+        "id": "5cf7d00e75481c4cf21bea07",
+        "theme": "tema",
+        "description": "teste",
+        "statement": "dcc.js/data:text/javascript;base64,Ly8gZ2xvYmFsIGNvbmZpZ3VyYXRpb24KSGlnaGNoYXJ0cy5zZXRPcHRpb25zKHsKICAgIGNoYXJ0OiB7CiAgICAgICAgem9vbVR5cGU6ICd4eScsCiAgICAgICAgc3R5bGU6IHsKICAgICAgICAgICAgZm9udEZhbWlseTogJ2FyaWFsJywKICAgICAgICAgICAgZm9udFdlaWdodDogJ2JvbGQnLAogICAgICAgIH0KICAgIH0sCgogICAgY3JlZGl0czogewogICAgICAgIGVuYWJsZWQ6IHRydWUsCiAgICAgICAgdGV4dDogIkRDQyBEZXR1eCAtLSBieSBIaWdoY2hhcnRzLmNvbSIsICAgICAvLyBJU08tODg1OS0xCiAgICAgICAgLy90ZXh0OiAiw4LCqSBDRVJULmJyIChTcGFtcG90cyBQcm9qZWN0KSAtLSBieSBIaWdoY2hhcnRzLmNvbSIsICAvLyBVVEYtOAogICAgICAgIHBvc2l0aW9uOiB7CiAgICAgICAgICAgIGFsaWduOiAnbGVmdCcsCiAgICAgICAgICAgIHZlcnRpY2FsQWxpZ246ICd0b3AnLAogICAgICAgICAgICB4OiAxNSwKICAgICAgICAgICAgeTogNDUsCiAgICAgICAgfSwKICAgIH0sCgogICAgbG9hZGluZzogewogICAgICAgIHN0eWxlOiB7CiAgICAgICAgICAgIGJhY2tncm91bmRDb2xvcjogJ2RhcmtncmF5JywKICAgICAgICB9LAogICAgICAgIGxhYmVsU3R5bGU6IHsKICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgIC8vIHRvcDogJzQ1JScsCiAgICAgICAgICAgIGZvbnRTaXplOiAnMjBwdCcsCiAgICAgICAgfSwKICAgIH0sCn0pOwoKCgovLyBsaWJzCgp2YXIgZGNjcGxvdGxpYiA9IHsKICBncmFudWxhcml0aWVzOiB7CiAgICBkYXk6ICJkYXkiLAogICAgd2VlazogIndlZWsiCiAgfSwKCiAgZ3JhbnVsYXJpdHk6IGdyYW51bGFyaXR5ID0+IHsKICAgIHJldHVybiBncmFudWxhcml0eSA9PSBkY2NwbG90bGliLmdyYW51bGFyaXRpZXMuZGF5ID8gKGQgPT4gZCkKICAgICAgICAgOiBncmFudWxhcml0eSA9PSBkY2NwbG90bGliLmdyYW51bGFyaXRpZXMud2VlayA/IGRhdGUgPT4gewogICAgICAgICAgICB2YXIgZGF0ZSA9IG5ldyBEYXRlKGRhdGUpLAogICAgICAgICAgICAgICAgZGF5ICA9IGRhdGUuZ2V0RGF5KCksCiAgICAgICAgICAgICAgICBkaWZmID0gZGF0ZS5nZXREYXRlKCkgLSBkYXkgKyAoZGF5ID09IDAgPyAtNjoxKTsgLy8gYWRqdXN0IHdoZW4gc3VuZGF5CgogICAgICAgICAgICByZXR1cm4gbmV3IERhdGUoZGF0ZS5zZXREYXRlKGRpZmYpKS50b0lTT1N0cmluZygpLnNsaWNlKDAsMTApOwogICAgICAgICAgIH0KICAgICAgICAgOiAoZCA9PiBkKQogIH0sCgoKICBjaGFydDogKHRhcmdldCwgc3R5bGU9ImxpbmUiKSA9PiAoCiAgICB7CiAgICAgIHJlbmRlclRvOiAgICAgICAgICAgIHRhcmdldCwKICAgICAgYmFja2dyb3VuZENvbG9yOiAgICAgJyNmZmZmZmYnLAogICAgICBtYXJnaW5Ub3A6ICAgICAgICAgICA2NSwKICAgICAgbWFyZ2luQm90dG9tOiAgICAgICAgOTAsCiAgICAgIGRlZmF1bHRTZXJpZXNUeXBlOiAgIHN0eWxlCiAgICB9CiAgKSwKCgogIGNuY3NfY2hhcnQ6IChkYXRhLCBncmFudWxhcml0eSwgY29udGFpbmVyKSA9PiB7CiAgICBncmFudWxhcml0eSA9IGRjY3Bsb3RsaWIuZ3JhbnVsYXJpdHkoZ3JhbnVsYXJpdHkpOwoKICAgIHZhcmlhbnRzID0gdXRpbHMuYXJyYXkuZ3JvdXBieShkYXRhLCBvID0+IG8uZmFtaWx5KTsKCiAgICBkYXRhID0gW107CiAgICBmb3IgKHZhciBbdmFyaWFudCwgY25jc10gb2YgdmFyaWFudHMpIHsKICAgICAgZGF0ZXMgPSB1dGlscy5hcnJheS5ncm91cGJ5KGNuY3MsIGMgPT4gZ3JhbnVsYXJpdHkoYy5kYXRlKSk7CgogICAgICBjb3VudHMgPSBbXTsKICAgICAgZm9yICh2YXIgW2RhdGUsIGNuY3NdIG9mIGRhdGVzKSB7CiAgICAgICAgY291bnRzLnB1c2goW0RhdGUucGFyc2UoZ3JhbnVsYXJpdHkoZGF0ZSkpLCBjbmNzLmxlbmd0aF0pCiAgICAgIH0KCiAgICAgIGRhdGEucHVzaCgKICAgICAgICB7CiAgICAgICAgICBuYW1lOiB2YXJpYW50LAogICAgICAgICAgZGF0YTogY291bnRzCiAgICAgICAgfQogICAgICApCiAgICB9CgogICAgbmV3IEhpZ2hjaGFydHMuQ2hhcnQoewogICAgICBjaGFydDogZGNjcGxvdGxpYi5jaGFydChjb250YWluZXIpLAogICAgICB0aXRsZTogeyB0ZXh0OiAnI0NuQ3MnIH0sCgogICAgICB5QXhpczogeyB0aXRsZTogeyB0ZXh0OiAnTnVtYmVyIG9mIENuQ3MnIH0gfSwKICAgICAgeEF4aXM6IHsKICAgICAgICB0eXBlOiAnZGF0ZXRpbWUnLAogICAgICAgIGRhdGVUaW1lTGFiZWxGb3JtYXRzOiB7CiAgICAgICAgICBkYXk6ICclWS0lbS0lZCcKICAgICAgICB9LAogICAgICAgIGxhYmVsczogewogICAgICAgICAgcm90YXRpb246IDQ1CiAgICAgICAgfQogICAgICB9LAoKICAgICAgbGVnZW5kOiB7CiAgICAgICAgbGF5b3V0OiAndmVydGljYWwnLAogICAgICAgIGFsaWduOiAncmlnaHQnLAogICAgICAgIHZlcnRpY2FsQWxpZ246ICdtaWRkbGUnCiAgICAgIH0sCgogICAgICBwbG90T3B0aW9uczogewogICAgICAgIHNlcmllczogewogICAgICAgICAgbGFiZWw6IHsKICAgICAgICAgICAgY29ubmVjdG9yQWxsb3dlZDogZmFsc2UKICAgICAgICAgIH0sCiAgICAgICAgfQogICAgICB9LAoKICAgICAgc2VyaWVzOiBkYXRhCiAgICB9KTsKICB9LAoKCiAgY25jc190YWJsZTogKGRhdGEpID0+IHsKICAgIGxldCBoZWFkZXJzID0gWyBbIHsgdGV4dDogIkNuQ3MiLCBjb2xTcGFuOiAiMiIgfSBdLCBbICJhZGRyZXNzIiwgImZhbWlseSIgXSBdOwogICAgbGV0IHJvd3MgPSBkYXRhLm1hcChjID0+IFsgYy5jbmMsIGMuZmFtaWx5IF0pOwoKCiAgICBsZXQgdGFibGUgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCd0YWJsZScpOwogICAgdGFibGUuY2xhc3NOYW1lID0gImNuY3MtdGFibGUiOwoKICAgIHRhYmxlLmFwcGVuZENoaWxkKAogICAgICB1dGlscy50YWJsZS5idWlsZF9zZWN0aW9uKAogICAgICAgIGhlYWRlcnMsCiAgICAgICAgInRoZWFkIiwKICAgICAgICAidHIiLAogICAgICAgIHsgbmFtZTogInRoIiwgY2xhc3NOYW1lOiAiY25jcy1oZWFkZXIiIH0KICAgICAgKQogICAgKTsKICAgIHRhYmxlLmFwcGVuZENoaWxkKAogICAgICB1dGlscy50YWJsZS5idWlsZF9zZWN0aW9uKAogICAgICAgIHJvd3MsCiAgICAgICAgInRib2R5IiwKICAgICAgICAidHIiLAogICAgICAgIHsgbmFtZTogInRkIiwgY2xhc3NOYW1lOiAiY25jcy1jZWxsIiB9CiAgICAgICkKICAgICk7CgogICAgcmV0dXJuIHRhYmxlOwogIH0KfQoKCgp2YXIgdXRpbHMgPSB7CiAgYXJyYXk6IHsKICAgIGdyb3VwYnk6IChsaXN0LCBrZXlHZXR0ZXIpID0+IHsKICAgICAgY29uc3QgbWFwID0gbmV3IE1hcCgpOwogICAgICBsaXN0LmZvckVhY2goCiAgICAgICAgaXRlbSA9PiB7CiAgICAgICAgICBjb25zdCBrZXkgPSBrZXlHZXR0ZXIoaXRlbSk7CiAgICAgICAgICBjb25zdCBjb2xsZWN0aW9uID0gbWFwLmdldChrZXkpOwoKICAgICAgICAgIGlmICghY29sbGVjdGlvbikKICAgICAgICAgICAgbWFwLnNldChrZXksIFtpdGVtXSk7CiAgICAgICAgICBlbHNlCiAgICAgICAgICAgIGNvbGxlY3Rpb24ucHVzaChpdGVtKTsKICAgICAgICB9CiAgICAgICk7CiAgICAgIHJldHVybiBtYXA7CiAgICB9CiAgfSwKCiAgdGFibGU6IHsKICAgIGJ1aWxkX3NlY3Rpb246IChyb3dzLCBjb250YWluZXJfZWxlbSwgcm93X2VsZW0sIGNlbGxfZWxlbSkgPT4gewogICAgICBsZXQgc3RyX29yX29iaiA9ICh4KSA9PiB7CiAgICAgICAgeCA9IHR5cGVvZiB4ID09PSAic3RyaW5nIiA/IHsgbmFtZTogeCB9IDogeDsKCiAgICAgICAgeC5jbGFzc05hbWUgPSB4LmNsYXNzTmFtZSB8fCAiIjsKCiAgICAgICAgcmV0dXJuIHg7CiAgICAgIH0KCiAgICAgIHZhciBjb250YWluZXJfZWxlbSA9IHN0cl9vcl9vYmooY29udGFpbmVyX2VsZW0pOwogICAgICB2YXIgcm93X2VsZW0gPSBzdHJfb3Jfb2JqKHJvd19lbGVtKTsKICAgICAgdmFyIGNlbGxfZWxlbSA9IHN0cl9vcl9vYmooY2VsbF9lbGVtKTsKCiAgICAgIGxldCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KGNvbnRhaW5lcl9lbGVtLm5hbWUpOwogICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gY29udGFpbmVyX2VsZW0uY2xhc3NOYW1lOwoKICAgICAgZm9yIChyb3cgb2Ygcm93cykgewogICAgICAgIGxldCByb3dfY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChyb3dfZWxlbS5uYW1lKTsKICAgICAgICByb3dfY29udGFpbmVyLmNsYXNzTmFtZSA9IHJvd19lbGVtLmNsYXNzTmFtZTsKCiAgICAgICAgZm9yIChjZWxsIG9mIHJvdykgewogICAgICAgICAgbGV0IGNlbGxfY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChjZWxsX2VsZW0ubmFtZSk7CiAgICAgICAgICBjZWxsX2NvbnRhaW5lci5jbGFzc05hbWUgPSBjZWxsX2VsZW0uY2xhc3NOYW1lOwogICAgICAgICAgY2VsbF9jb250YWluZXIuY29sU3BhbiA9IGNlbGwuY29sU3BhbiB8fCAiMSI7CgogICAgICAgICAgY2VsbF9jb250YWluZXIuYXBwZW5kQ2hpbGQoZG9jdW1lbnQuY3JlYXRlVGV4dE5vZGUoY2VsbC50ZXh0IHx8IGNlbGwpKTsKICAgICAgICAgIHJvd19jb250YWluZXIuYXBwZW5kQ2hpbGQoY2VsbF9jb250YWluZXIpOwogICAgICAgIH0KCiAgICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHJvd19jb250YWluZXIpOwogICAgICB9CgogICAgICByZXR1cm4gY29udGFpbmVyOwogICAgfQogIH0KfQo=",
+        "record": null,
+        "pvt": false
+      }
       #+END_src
 ***** All
       #+call: get(address, questions-endpoint, params="token=d2fad245dd1d8a4f863e3f1c32bdada723361e6f63cfddf56663e516e47347bb")
@@ -71,36 +78,49 @@
       #+BEGIN_src json
       [
         {
-          "id": "5cef2b28eeddfd4b1fe5ac7e",
-          "theme": "reuso",
-          "description": "qual a melhor técinica de reuso?",
+          "id": "5cf2b5c8070dec42f64387d6",
+          "theme": "foruth",
+          "description": "testando?",
           "record": {
-            "2020/1": {
-              "tz": 5.0,
-              "tw": 6.0
-            },
             "2020/2": {
-              "tz": 4.0,
-              "tw": 7.0
+              "tz": 4.5,
+              "tw": 7.5
             }
           },
           "pvt": true
         },
         {
-          "id": "5cef2b40eeddfd4b1fe5ac7f",
-          "theme": "agil",
-          "description": "qual o melhor método ágil?",
+          "id": "5cf2b606070dec42f64387d7",
+          "theme": "quitute",
+          "description": "fifififi?",
           "record": {
             "2020/1": {
               "tz": 5.0,
               "tw": 6.0
             },
             "2020/2": {
-              "tz": 4.0,
-              "tw": 7.0
+              "tz": 5.9,
+              "tw": 6.9,
+              "tx": 7.9,
+              "ta": 8.9
+            },
+            "2019/2": {
+              "tz": 5.0,
+              "tw": 6.0
+            },
+            "2019/1": {
+              "tz": 4.5,
+              "tw": 7.5
             }
           },
           "pvt": true
+        },
+        {
+          "id": "5cf7d00e75481c4cf21bea07",
+          "theme": "tema",
+          "description": "teste",
+          "record": null,
+          "pvt": false
         }
       ]
       #+END_src
@@ -131,7 +151,7 @@
              "ta": 8.9
            }
          },
-         "pvt": true
+         "pvt": false
        }
      #+end_example
      #+call: post(address, questions-endpoint, token, question-payload)
