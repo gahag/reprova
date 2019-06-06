@@ -1,3 +1,13 @@
+function mean(arr) {
+  if (arr.length == 0)
+    return 0;
+
+  let sum = arr.reduce((a, b) => a + b);
+
+  return sum / arr.length;
+}
+
+
 function table_build_section(rows, container_elem, row_elem, cell_elem) {
   function str_or_obj(x) {
     x = typeof x === 'string' ? { name: x } : x;
@@ -38,51 +48,74 @@ function table_build_section(rows, container_elem, row_elem, cell_elem) {
 }
 
 function questionsTable(data) {
-  let headers = [
+  const headers = [
     [ { text: 'Questions', colSpan: '5' } ],
-    [ 'Description', 'Theme', 'Record', 'Private', 'Actions' ]
+    token ? [ 'Description', 'Theme', 'Record', 'Private', 'Actions' ]
+          : [ 'Description', 'Theme', 'Difficulty', 'Actions' ]
   ];
-  let rows = data.map(
+  const rows = data.map(
     q => {
-      let record = document.createElement('div');
-      for (semester in q.record) {
-        let grades = Object.entries(q.record[semester]);
-
-        let table = document.createElement('table');
-        table.className = 'record-table';
-
-        table.appendChild(
-          table_build_section([[semester]], 'thead', 'tr', 'th')
-        );
-        table.appendChild(
-          table_build_section(grades, 'tbody', 'tr', 'td')
-        );
-
-        record.appendChild(table);
-      }
+      let actions = document.createElement('div');
 
       let download = document.createElement('button');
       download.appendChild(document.createTextNode('Download'));
       download.type = 'button';
       download.onclick = () => downloadQuestion(q.id);
-
-      let remove = document.createElement('button');
-      remove.appendChild(document.createTextNode('Remove'));
-      remove.type = 'button';
-      remove.onclick = () => removeQuestion(q.id);
-
-      let actions = document.createElement('div');
       actions.appendChild(download);
-      actions.appendChild(remove);
-      // actions.appendChild(edit);
 
-      return [
-        q.description,
-        q.theme,
-        { elem: record },
-        q.pvt,
-        { elem: actions }
-      ];
+      if (token) {
+        let remove = document.createElement('button');
+        remove.appendChild(document.createTextNode('Remove'));
+        remove.type = 'button';
+        remove.onclick = () => {
+          if (confirm('Remove question?'))
+            removeQuestion(q.id);
+        };
+        actions.appendChild(remove);
+
+        let edit = document.createElement('button');
+        edit.appendChild(document.createTextNode('Edit'));
+        edit.type = 'button';
+        edit.onclick = () => editQuestion(q.id);
+        actions.appendChild(edit);
+
+        let record = document.createElement('div');
+        for (semester in q.record) {
+          const grades = Object.entries(q.record[semester]);
+
+          let table = document.createElement('table');
+          table.className = 'record-table';
+
+          table.appendChild(
+            table_build_section(
+              [[ { text: semester, colSpan: '2' } ]],
+              'thead',
+              'tr',
+              'th'
+            )
+          );
+          table.appendChild(
+            table_build_section(grades, 'tbody', 'tr', 'td')
+          );
+
+          record.appendChild(table);
+        }
+
+        return [ q.description, q.theme, { elem: record }, q.pvt, { elem: actions } ];
+      }
+      else {
+        const record = mean(
+          Object
+            .values(q.record)
+            .flatMap(Object.values)
+        );
+
+        const difficulty = record < 3.3 ? 'Hard'
+                         : record < 6.6 ? 'Medium'
+                         : 'Easy';
+
+        return [ q.description, q.theme, difficulty, { elem: actions } ];
+      }
     }
   );
 
@@ -112,33 +145,46 @@ function questionsTable(data) {
 
 
 async function downloadQuestion(id) {
-  const response = await fetch(
+  const request = await fetch(
     'http://localhost:8080/api/questions?token=' + token + '&id=' + id
   );
-  const question = await response.json();
+  const question = await request.json();
 
-  // TODO decompress and download.
+  const statement = question.statement;
+  const separator = statement.indexOf('/');
+  const filename  = statement.substring(0, separator);
+  const payload   = statement.substring(separator + 1);
 
-  console.log(question); // TODO
+  let download = document.createElement('a');
+  download.href = payload;
+  download.download = filename;
+  download.click();
 }
 
 async function removeQuestion(id) {
-  const response = await fetch(
+  const request = await fetch(
     'http://localhost:8080/api/questions?token=' + token + '&id=' + id,
     { method: 'delete' }
   );
 
-  if (response.ok)
+  if (request.ok)
     refresh();
   else
     alert('Failed to delete question!');
 }
 
+function editQuestion(id) {
+  let location = '/question.html?id=' + id;
+
+  if (token)
+    location += '&token=' + token;
+
+  window.location = location;
+};
+
 async function loadQuestions() {
   const request = await fetch('http://localhost:8080/api/questions?token=' + token);
   const response = await request.json();
-
-  console.log(response);
 
   let table = questionsTable(response);
   table.id = 'questions';
@@ -157,11 +203,27 @@ async function refresh() {
 }
 
 
-var url = new URL(window.location.href);
-var token = url.searchParams.get("token");
+const url = new URL(window.location.href);
+const token = url.searchParams.get("token");
 
-var questionsDataTable;
+let questionsDataTable;
 
-$(document).ready(async () => {
-  questionsDataTable = await loadQuestions();
-});
+$(document).ready(
+  async () => {
+    if (token)
+      $('#new-question').click(
+        () => {
+          let location = '/question.html';
+
+          if (token)
+            location += '?token=' + token;
+
+          window.location = location;
+        }
+      );
+    else
+      $('#new-question').hide();
+
+    questionsDataTable = await loadQuestions();
+  }
+);
