@@ -12,3 +12,37 @@ body {
 input {
   margin: 5px 0;
 }
+
+
+select {
+  overflow-y: auto;
+}
+
+
+.toolbutton {
+  width: 25px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.short {
+  width: 50px;
+}
+
+.semesters {
+  width: 150px;
+  display: inline-block;
+}
+
+.semester {
+  display: inline-block;
+  vertical-align: top;
+}
+
+
+#year {
+  width: 50px;
+}
+
+#ref {
+  width: 30px;
+}

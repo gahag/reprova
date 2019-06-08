@@ -110,8 +110,8 @@ function questionsTable(data) {
             .flatMap(Object.values)
         );
 
-        const difficulty = record < 3.3 ? 'Hard'
-                         : record < 6.6 ? 'Medium'
+        const difficulty = record < 33.3 ? 'Hard'
+                         : record < 66.6 ? 'Medium'
                          : 'Easy';
 
         return [ q.description, q.theme, difficulty, { elem: actions } ];

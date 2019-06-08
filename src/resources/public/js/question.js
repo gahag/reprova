@@ -1,3 +1,124 @@
+function textboxEmpty(tbox) {
+  let val = tbox.val();
+  return val == '' || val == tbox.prop('name');
+}
+
+
+function saveRecord() {
+  let semester = $('#semesters option:selected').text();
+
+  function getVal() {
+    return $(this).val();
+  }
+
+  let classes = $("#semester input[type=text]")
+      .map(getVal)
+      .get();
+
+  let recs = $("#semester input[type=number]")
+      .map(getVal)
+      .get();
+
+  let repeated = false;
+
+  let record = classes.reduce(
+    (obj, c, i) => {
+      if (c in obj)
+        repeated = true;
+
+      return ({
+        ...obj,
+        [c]: Number(recs[i])
+      });
+    },
+    {}
+  );
+
+  if (repeated) {
+    alert('There are two classes with the same name!');
+    return;
+  }
+
+  question.record[semester] = record;
+}
+
+
+function selectRecord(record) {
+  let parent = $('#semester');
+
+  function addRow(cls, value) {
+    let row = document.createElement('div');
+
+    let clsInput = document.createElement('input');
+    clsInput.type = 'text';
+    clsInput.name = 'Turma';
+    clsInput.value = cls;
+    clsInput.className = 'short';
+    row.appendChild(clsInput);
+
+    let valInput = document.createElement('input');
+    valInput.type = 'number';
+    valInput.min = 0;
+    valInput.max = 100;
+    valInput.value = value;
+    valInput.className = 'short';
+    row.appendChild(valInput);
+
+    let remove = document.createElement('input');
+    remove.type = 'button';
+    remove.value = '-';
+    remove.className = 'toolbutton';
+    remove.onclick = () => row.parentNode.removeChild(row);
+    row.appendChild(remove);
+
+    parent.append(row);
+  }
+
+  parent.empty();
+
+  for (let [ cls, val ] of Object.entries(record))
+    addRow(cls, val);
+
+  let buttons = document.createElement('div');
+  parent.append(buttons);
+
+  let add = document.createElement('input');
+  add.type = 'button';
+  add.value = 'Add';
+  add.onclick = () => {
+    buttons.parentNode.removeChild(buttons);
+    addRow('Turma', '0');
+    parent.append(buttons);
+  };
+  buttons.appendChild(add);
+
+  let save = document.createElement('input');
+  save.type = 'button';
+  save.value = 'Save';
+  save.onclick = saveRecord;
+  buttons.appendChild(save);
+}
+
+function loadRecord(record) {
+  let select = $('#semesters');
+  select.empty();
+
+  for (let [ semester, rec ] of Object.entries(record)) {
+    let option = document.createElement('option');
+    option.appendChild(document.createTextNode(semester));
+
+    select.append(option);
+
+    select.change(
+      () => {
+        if (option.selected)
+          selectRecord(rec);
+      }
+    );
+  }
+}
+
+
 async function loadfile(inputFile) {
   const filereader = new FileReader();
 
@@ -24,7 +145,7 @@ async function load() {
 
   $('#description').val(question.description);
   $('#theme').val(question.theme);
-  // TODO record
+  loadRecord(question.record);
   $('#pvt').prop('checked', question.pvt);
 
   return question;
@@ -34,16 +155,15 @@ async function load() {
 async function save() {
   const description = $('#description');
   const theme = $('#theme');
-  // TODO record
   const pvt = $('#pvt').prop('checked');
 
-  if (description.val() == description.prop('name')) {
+  if (textboxEmpty(description)) {
     alert('Please fill in the description!');
     description.focus();
     return;
   }
 
-  if (theme.val() == theme.prop('name')) {
+  if (textboxEmpty(theme)) {
     alert('Please fill in the theme!');
     theme.focus();
     return;
@@ -63,7 +183,7 @@ async function save() {
     'theme': theme.val(),
     'description': description.val(),
     'statement': statement,
-    'record': { }, // TODO
+    'record': question.record,
     'pvt': pvt,
   };
 
@@ -90,7 +210,9 @@ const url = new URL(window.location.href);
 const token = url.searchParams.get("token");
 const id = url.searchParams.get("id");
 
-let question = {};
+let question = {
+  record: {}
+};
 
 $(document).ready(
   async() => {
@@ -98,7 +220,7 @@ $(document).ready(
 
     inputs.focus(
       function() {
-        if ($(this).val() == $(this).attr('name'))
+        if ($(this).val() == $(this).prop('name'))
           $(this).val('');
       }
     );
@@ -106,7 +228,49 @@ $(document).ready(
     inputs.blur(
       function() {
         if ($(this).val() == '')
-          $(this).val($(this).attr('name'));
+          $(this).val($(this).prop('name'));
+      }
+    );
+
+
+    $('#add-semester').click(
+      () => {
+        let year = $('#year').val();
+
+        if (year < 0 || year > 3000) {
+          alert('Invalid year!');
+          return;
+        }
+
+        let ref = $('#ref').val();
+
+        if (ref < 1 || ref > 2) {
+          alert('Invalid semester!');
+          return;
+        }
+
+        let semester = year + '/' + ref;
+
+        if (!(semester in question.record))
+          question.record[semester] = {};
+
+        loadRecord(question.record);
+      }
+    );
+
+
+    $('#remove-semester').click(
+      () => {
+        let selected = $('#semesters option:selected');
+        let semester = selected.text();
+
+        if (!semester || !confirm('Remove semester ' + semester + ' ?'))
+          return;
+
+        delete question.record[semester];
+
+        selected.remove();
+        $('#semester').empty();
       }
     );
 

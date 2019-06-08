@@ -26,9 +26,21 @@
       <textarea id="description" name="Description" rows="5" cols="50">Description</textarea> <br/>
       <input id="theme" name="Theme" type="text" value="Theme" /> <br/>
       Record:
-      <div id="record">
+      <input type="button" id="remove-semester" class="toolbutton" value="-" />
+      <span style="display:inline-block; width: 10px;"></span>
+      <input id="year" type="number" min="0" max="3000" value="2019" />
+      <input id="ref" type="number" min="1" max="2" value="1" />
+      <input type="button" id="add-semester" value="Add" />
+      <br/>
+      <div id="record" class="record">
+        <select id="semesters" class="semesters" size="5">
+        </select>
+
+        <div id="semester" class="semester">
+        </div>
       </div>
       <br/>
+
       Statement: <input id="statement" type="file" /> <br/>
       <label><input id="pvt" type="checkbox" value="Private" /> Private</label> <br/>
 
