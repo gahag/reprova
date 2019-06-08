@@ -6,7 +6,7 @@ services:
   reprova:
     container_name: reprova
     build: .
-    image: reprova/reprova:v0.1
+    image: gahag/reprova:v0.1
     ports:
     - 8080:8080
     depends_on:

@@ -54,6 +54,14 @@ function selectRecord(record) {
     clsInput.name = 'Turma';
     clsInput.value = cls;
     clsInput.className = 'short';
+    clsInput.onfocus = function() {
+      if (this.value == this.name)
+        this.value = '';
+    };
+    clsInput.onblur = function() {
+      if (this.value == '')
+        this.value = this.name;
+    };
     row.appendChild(clsInput);
 
     let valInput = document.createElement('input');
