@@ -4,7 +4,15 @@ import java.util.Map;
 import java.util.HashMap;
 
 
+/**
+ * A semester class.
+ * The semester is composed of an year and a reference (1 or 2).
+ */
 public class Semester {
+  /**
+   * The reference part of a semester.
+   * Either 1 or 2.
+   */
   public enum Reference {
     _1(1),
     _2(2);
@@ -14,12 +22,19 @@ public class Semester {
       this.value = i;
     }
 
-    protected static final Map<Integer, Reference> valueMap = new HashMap<Integer, Reference>();
+    /**
+     * The mapping of integers to Semester.Reference.
+     */
+    protected static final Map<Integer, Reference> valueMap =
+      new HashMap<Integer, Reference>();
     static {
       for (var ref : Reference.values())
         valueMap.put(ref.value, ref);
     }
 
+    /**
+     * Convert a int to a Semester.Reference.
+     */
     public static Reference fromInt(int i) {
       Reference ref = valueMap.get(Integer.valueOf(i));
 
@@ -31,11 +46,23 @@ public class Semester {
   }
 
 
+  /**
+   * The year of the semester.
+   */
   public final int year;
+  /**
+   * The reference of the semester.
+   */
   public final Reference ref;
 
 
 
+  /**
+   * Construct a Semester.
+   * @param year  the year
+   * @param ref   the reference
+   * @throws IllegalArgumentException  if any parameter is null
+   */
   public Semester(int year, Reference ref) {
     if (ref == null)
       throw new IllegalArgumentException("ref mustn't be null");
@@ -46,6 +73,9 @@ public class Semester {
 
 
 
+  /**
+   * Convert a Semester to String for visualization purposes.
+   */
   public String toString() {
     return String.format(
       "%d/%d",

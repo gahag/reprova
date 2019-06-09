@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * The question type.
+ */
 public class Question {
   /**
    * The id of the question.
@@ -33,6 +36,9 @@ public class Question {
 
 
 
+  /**
+   * Builder for Question.
+   */
   public static class Builder {
     protected String id;
     protected String theme;
@@ -72,6 +78,10 @@ public class Question {
     }
 
 
+    /**
+     * Build the question.
+     * @throws IllegalArgumentException  if any parameter is invalid
+     */
     public Question build() {
       if (theme == null)
         throw new IllegalArgumentException("theme mustn't be null");
@@ -106,6 +116,9 @@ public class Question {
     }
   }
 
+  /**
+   * Protected constructor, should only be used by the builder.
+   */
   protected Question(
     String id,
     String theme,
@@ -124,6 +137,9 @@ public class Question {
 
 
 
+  /**
+   * Convert a Question to String for visualization purposes.
+   */
   @Override
   public String toString() {
     var builder = new StringBuilder();

@@ -13,8 +13,19 @@ import br.ufmg.engsoft.reprova.model.Question;
 import br.ufmg.engsoft.reprova.model.Semester;
 
 
+/**
+ * Json format for Reprova's types.
+ */
 public class Json {
+  /**
+   * Deserializer for Semester.
+   */
   protected static class SemesterDeserializer implements JsonDeserializer<Semester> {
+    /**
+     * The semester format is:
+     * "year/ref"
+     * Where ref is 1 or 2.
+     */
     @Override
     public Semester deserialize(
       JsonElement json,
@@ -35,6 +46,9 @@ public class Json {
   }
 
 
+  /**
+   * Deserializer for Question.Builder.
+   */
   protected static class QuestionBuilderDeserializer
     implements JsonDeserializer<Question.Builder>
   {
@@ -46,15 +60,19 @@ public class Json {
     ) {
       var parserBuilder = new GsonBuilder();
 
-      parserBuilder.registerTypeAdapter(Semester.class, new SemesterDeserializer());
+      parserBuilder.registerTypeAdapter( // Question has a Semester field.
+        Semester.class,
+        new SemesterDeserializer()
+      );
 
       var questionBuilder = parserBuilder
         .create()
         .fromJson(
           json.getAsJsonObject(),
           Question.Builder.class
-      );
+        );
 
+      // Mongo's id property doesn't match Question.id:
       var _id = json.getAsJsonObject().get("_id");
 
       if (_id != null)
@@ -70,10 +88,17 @@ public class Json {
 
 
 
-  protected Gson gson;
+  /**
+   * The json formatter.
+   */
+  protected final Gson gson;
 
 
 
+  /**
+   * Instantiate the formatter for Reprova's types.
+   * Currently, it supports only the Question type.
+   */
   public Json() {
     var parserBuilder = new GsonBuilder();
 
@@ -87,10 +112,18 @@ public class Json {
 
 
 
+  /**
+   * Parse an object in the given class.
+   * @throws JsonSyntaxException  if json is not a valid representation for the given class
+   */
   public <T> T parse(String json, Class<T> cls) {
     return this.gson.fromJson(json, cls);
   }
 
+
+  /**
+   * Render an object of the given class.
+   */
   public <T> String render(T obj) {
     return this.gson.toJson(obj);
   }

@@ -10,15 +10,35 @@ import br.ufmg.engsoft.reprova.routes.api.Questions;
 import br.ufmg.engsoft.reprova.mime.json.Json;
 
 
+/**
+ * Service setup class.
+ * This class is static.
+ */
 public class Setup {
+  /**
+   * Static class.
+   */
   protected Setup() { }
 
-
-  protected static final int port = 8080;
-
+  /**
+   * Logger instance.
+   */
   protected static Logger logger = LoggerFactory.getLogger(Setup.class);
 
+  /**
+   * The port for the webserver.
+   */
+  protected static final int port = 8080;
 
+
+  /**
+   * Setup the service routes.
+   * This sets up the routes under the routes directory,
+   * and also static files on '/public'.
+   * @param json          the json formatter
+   * @param questionsDAO  the DAO for Question
+   * @throws IllegalArgumentException  if any parameter is null
+   */
   public static void routes(Json json, QuestionsDAO questionsDAO) {
     if (json == null)
       throw new IllegalArgumentException("json mustn't be null");
