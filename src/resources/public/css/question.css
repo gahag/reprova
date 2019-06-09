@@ -35,7 +35,18 @@ select {
 
 .semester {
   display: inline-block;
+
+  min-width: 130px;
+  padding: 5px;
+
   vertical-align: top;
+
+  border-style: solid;
+  border-width: 1px;
+}
+
+.buttons input {
+  margin: 5px 2px;
 }
 
 

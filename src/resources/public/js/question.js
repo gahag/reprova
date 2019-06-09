@@ -88,6 +88,7 @@ function selectRecord(record) {
     addRow(cls, val);
 
   let buttons = document.createElement('div');
+  buttons.className = 'buttons';
   parent.append(buttons);
 
   let add = document.createElement('input');
