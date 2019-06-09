@@ -7,6 +7,8 @@ services:
     container_name: reprova
     build: .
     image: gahag/reprova:v0.1
+    environment:
+      - REPROVA_TOKEN=d2fad245dd1d8a4f863e3f1c32bdada723361e6f63cfddf56663e516e47347bb
     ports:
     - 8080:8080
     depends_on:

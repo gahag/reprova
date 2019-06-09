@@ -24,8 +24,7 @@ public class Questions {
   /**
    * Access token.
    */
-  protected static final String token =
-    "d2fad245dd1d8a4f863e3f1c32bdada723361e6f63cfddf56663e516e47347bb";
+  protected static final String token = System.getenv("REPROVA_TOKEN");
 
   /**
    * Messages.

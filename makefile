@@ -4,8 +4,14 @@ build:
 package:
 	mvn assembly:single
 
-docker:
+test:
+	mvn test
+
+docker-build:
 	docker-compose build
 
-run:
+docker-pull:
+	docker-compose pull reprova
+
+docker-run:
 	docker-compose up
