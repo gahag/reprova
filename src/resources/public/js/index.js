@@ -158,7 +158,9 @@ async function downloadQuestion(id) {
   let download = document.createElement('a');
   download.href = payload;
   download.download = filename;
+  document.body.appendChild(download);
   download.click();
+  download.remove();
 }
 
 async function removeQuestion(id) {
