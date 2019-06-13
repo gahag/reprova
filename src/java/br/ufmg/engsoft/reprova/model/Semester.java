@@ -1,6 +1,7 @@
 package br.ufmg.engsoft.reprova.model;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.HashMap;
 
 
@@ -26,8 +27,7 @@ public class Semester {
      * The mapping of integers to Semester.Reference.
      */
     protected static final Map<Integer, Reference> valueMap =
-      new HashMap<Integer, Reference>();
-    static {
+      new HashMap<Integer, Reference>(); static {
       for (var ref : Reference.values())
         valueMap.put(ref.value, ref);
     }
@@ -73,9 +73,29 @@ public class Semester {
 
 
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this)
+      return true;
+
+    if (!(obj instanceof Semester))
+      return false;
+
+    var semester = (Semester) obj;
+
+    return this.year == semester.year
+        && this.ref == semester.ref;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.year, this.ref);
+  }
+
   /**
    * Convert a Semester to String for visualization purposes.
    */
+  @Override
   public String toString() {
     return String.format(
       "%d/%d",

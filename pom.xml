@@ -64,6 +64,8 @@
 
     <sourceDirectory>src/java</sourceDirectory>
 
+    <testSourceDirectory>src/tests</testSourceDirectory>
+
     <resources>
 			<resource>
 				<directory>src/resources</directory>
