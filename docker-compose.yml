@@ -8,6 +8,7 @@ services:
     build: .
     image: gahag/reprova:v0.1
     environment:
+      - PORT=8080
       - REPROVA_TOKEN=d2fad245dd1d8a4f863e3f1c32bdada723361e6f63cfddf56663e516e47347bb
       - REPROVA_MONGO=mongo:27017
     ports:

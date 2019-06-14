@@ -146,7 +146,7 @@ function questionsTable(data) {
 
 async function downloadQuestion(id) {
   const request = await fetch(
-    'http://localhost:8080/api/questions?token=' + token + '&id=' + id
+    '/api/questions?token=' + token + '&id=' + id
   );
   const question = await request.json();
 
@@ -165,7 +165,7 @@ async function downloadQuestion(id) {
 
 async function removeQuestion(id) {
   const request = await fetch(
-    'http://localhost:8080/api/questions?token=' + token + '&id=' + id,
+    '/api/questions?token=' + token + '&id=' + id,
     { method: 'delete' }
   );
 
@@ -185,7 +185,7 @@ function editQuestion(id) {
 };
 
 async function loadQuestions() {
-  const request = await fetch('http://localhost:8080/api/questions?token=' + token);
+  const request = await fetch('/api/questions?token=' + token);
   const response = await request.json();
 
   let table = questionsTable(response);

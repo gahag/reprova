@@ -148,7 +148,7 @@ async function loadfile(inputFile) {
 
 async function load() {
   const request = await fetch(
-    'http://localhost:8080/api/questions?token=' + token + '&id=' + id
+    '/api/questions?token=' + token + '&id=' + id
   );
   const question = await request.json();
 
@@ -200,7 +200,7 @@ async function save() {
     question['id'] = id;
 
   const request = await fetch(
-    'http://localhost:8080/api/questions?token=' + token,
+    '/api/questions?token=' + token,
     {
       method: 'post',
       body: JSON.stringify(question)
