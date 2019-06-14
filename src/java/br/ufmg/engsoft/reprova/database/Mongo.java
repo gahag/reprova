@@ -20,23 +20,9 @@ public class Mongo {
   protected static final Logger logger = LoggerFactory.getLogger(Mongo.class);
 
   /**
-   * Connection timeout for the database. For the local docker setup, 5 seconds is enough.
-   */
-  protected static final int connectTimeout = 5000;
-
-  /**
-   * Options for the connection string.
-   */
-  protected static final String options = String.format(
-    "?connectTimeoutMS=%d",
-    connectTimeout
-  );
-
-  /**
    * Full connection string, obtained from 'REPROVA_MONGO' environment variable.
    */
-  protected static final String endpoint =
-    "mongodb://" + System.getenv("REPROVA_MONGO") + "/" + options;
+  protected static final String endpoint = System.getenv("REPROVA_MONGO");
 
   /**
    * The mongodb driver instance.

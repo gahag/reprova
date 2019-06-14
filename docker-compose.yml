@@ -10,7 +10,7 @@ services:
     environment:
       - PORT=8080
       - REPROVA_TOKEN=d2fad245dd1d8a4f863e3f1c32bdada723361e6f63cfddf56663e516e47347bb
-      - REPROVA_MONGO=mongo:27017
+      - REPROVA_MONGO=mongodb://mongo:27017/?connectTimeoutMS=5000
     ports:
     - 8080:8080
     depends_on:
