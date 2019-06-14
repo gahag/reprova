@@ -33,11 +33,10 @@ public class Mongo {
   );
 
   /**
-   * Full connection string.
-   * The mongodb docker is named 'mongo' in this setup.
-   * Uses the default port.
+   * Full connection string, obtained from 'REPROVA_MONGO' environment variable.
    */
-  protected static final String endpoint = "mongodb://mongo:27017/" + options;
+  protected static final String endpoint =
+    "mongodb://" + System.getenv("REPROVA_MONGO") + "/" + options;
 
   /**
    * The mongodb driver instance.
