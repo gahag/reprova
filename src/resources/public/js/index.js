@@ -55,6 +55,11 @@ function questionsTable(data) {
   ];
   const rows = data.map(
     q => {
+      // wordwrap works better if the element is enclosed by a div.
+      let description = document.createElement('div');
+      description.className = 'description';
+      description.appendChild(document.createTextNode(q.description));
+
       let actions = document.createElement('div');
 
       let download = document.createElement('button');
@@ -101,7 +106,13 @@ function questionsTable(data) {
           record.appendChild(table);
         }
 
-        return [ q.description, q.theme, { elem: record }, q.pvt, { elem: actions } ];
+        return [
+          { elem: description },
+          q.theme,
+          { elem: record },
+          q.pvt,
+          { elem: actions }
+        ];
       }
       else {
         const record = mean(
@@ -114,7 +125,12 @@ function questionsTable(data) {
                          : record < 66.6 ? 'Medium'
                          : 'Easy';
 
-        return [ q.description, q.theme, difficulty, { elem: actions } ];
+        return [
+          { elem: description },
+          q.theme,
+          difficulty,
+          { elem: actions }
+        ];
       }
     }
   );
@@ -193,7 +209,16 @@ async function loadQuestions() {
 
   $('#root').append(table);
 
-  return $('#questions').DataTable();
+  return $('#questions').DataTable(
+    {
+      'columnDefs': [
+        {
+          'max-width': '35%',
+          'targets': 0
+        }
+      ],
+    }
+  );
 }
 
 async function refresh() {

@@ -35,6 +35,10 @@ h2 {
   padding: 15px;
 }
 
+.description {
+  max-width: 700px;
+}
+
 .record-table {
   float: left;
 }
